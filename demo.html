@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>myDirectory: Charleston Weddings</title>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      /* Color Palette */
+      :root {
+        --bg-color: #fdfcf9;
+        --primary: #d4bfaa;
+        --text-color: #333333;
+        --secondary: #a3a29f;
+        --highlight: #b97c6d;
+        --card-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        --card-hover-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        --transition: all 0.3s ease;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg-color);
+        color: var(--text-color);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.6;
+      }
+      h1, h2 {
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 1.5rem;
+      }
+      .container {
+        max-width: 600px;
+        margin: 4rem auto;
+        padding: 2rem 1rem;
+        text-align: center;
+      }
+      .welcome-container {
+        min-height: 60vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+      }
+      .welcome-container h1 {
+        margin-bottom: 0;
+      }
+      .welcome-container button {
+        margin-top: 2rem;
+        padding: 1rem 3rem;
+        font-size: 1.1rem;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid var(--secondary);
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        box-shadow: var(--card-shadow);
+        transition: var(--transition);
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+      }
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--card-hover-shadow);
+      }
+      .card.highlight {
+        border: 2px solid var(--highlight);
+      }
+      .image-container {
+        position: relative;
+        width: 40%;
+        padding-top: 26.67%; /* 3:2 aspect ratio for 40% width */
+        background: #f5f5f5;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .card img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+        transition: var(--transition);
+      }
+      .card-content {
+        padding: 1.5rem;
+        text-align: left;
+        flex: 1;
+      }
+      .card-content h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.25rem;
+        color: var(--text-color);
+      }
+      .card-content p {
+        margin: 0.5rem 0;
+        color: var(--secondary);
+      }
+      button {
+        background: var(--highlight);
+        border: none;
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin: 0.5rem;
+        transition: var(--transition);
+        font-weight: 600;
+      }
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      input[type="number"],
+      input[type="date"] {
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid var(--secondary);
+        border-radius: 4px;
+        margin-top: 0.5rem;
+        width: 80%;
+      }
+      .small {
+        font-size: 0.9rem;
+        color: var(--secondary);
+      }
+      .back-btn {
+        background: transparent;
+        border: none;
+        color: var(--highlight);
+        text-decoration: underline;
+        cursor: pointer;
+        margin-top: 1rem;
+      }
+      /* Modal Styles */
+      .modal {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+      }
+      .modal-content {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        text-align: left;
+        position: relative;
+        box-shadow: var(--card-hover-shadow);
+      }
+      .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--secondary);
+        transition: var(--transition);
+      }
+      .modal-close:hover {
+        color: var(--highlight);
+      }
+      .modal img {
+        width: 100%;
+        margin: 1rem 0;
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+      }
+      .modal-return {
+        display: block;
+        margin: 1rem auto 0;
+        background: var(--highlight);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        text-align: center;
+        cursor: pointer;
+      }
+      /* Final page grid */
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+      .summary-card {
+        position: relative;
+        background: #fff;
+        border: 2px solid var(--highlight);
+        border-radius: 12px;
+        box-shadow: var(--card-hover-shadow);
+        overflow: hidden;
+        transition: var(--transition);
+      }
+      .summary-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+      }
+      .summary-card::before {
+        content: attr(data-category);
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: var(--highlight);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        z-index: 1;
+      }
+      .summary-card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-bottom: 1px solid var(--secondary);
+      }
+      .summary-content {
+        padding: 1.5rem;
+        text-align: left;
+      }
+      .summary-content h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.5rem;
+        color: var(--text-color);
+      }
+      .summary-content p {
+        margin: 0.5rem 0;
+        color: var(--secondary);
+        font-size: 1rem;
+      }
+      .summary-content .small {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+      .summary-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+      }
+      .summary-actions button {
+        flex: 1;
+        min-width: 120px;
+      }
+      /* Update the title section */
+      h1 {
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 0.75rem;
+        font-size: 2.5rem;
+        line-height: 1;
+      }
+      .subtitle {
+        font-family: 'Inter', sans-serif;
+        color: var(--secondary);
+        font-size: 0.8rem;
+        font-weight: normal;
+        opacity: 0.6;
+        margin-bottom: 0.2rem;
+      }
+      h2.small {
+        margin-top: 0;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+        color: var(--secondary);
+        opacity: 0.8;
+      }
+      /* Add calendar icon button style */
+      .calendar-btn {
+        background: transparent;
+        color: var(--highlight);
+        padding: 0.5rem;
+        border: none;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .calendar-btn:hover {
+        transform: scale(1.1);
+      }
+      .calendar-btn:disabled {
+        color: #ccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+      /* Update unavailable vendor styles */
+      .card.unavailable {
+        opacity: 0.7;
+        background: #f8f8f8;
+      }
+      .card.unavailable .card-content {
+        position: relative;
+      }
+      .card.unavailable::before {
+        content: "Not Available";
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: var(--highlight);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+      /* Budget Selection Styles */
+      .budget-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+      }
+      .budget-card {
+        background: #fff;
+        border: 1px solid var(--secondary);
+        border-radius: 12px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: left;
+      }
+      .budget-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--card-hover-shadow);
+      }
+      .budget-card.highlight {
+        border: 2px solid var(--highlight);
+        background: var(--bg-color);
+      }
+      .budget-card h3 {
+        margin: 0 0 0.5rem 0;
+        color: var(--text-color);
+      }
+      .budget-card p {
+        margin: 0;
+        color: var(--secondary);
+      }
+      .custom-budget {
+        margin: 2rem 0;
+      }
+      .custom-input {
+        width: 100%;
+        max-width: 300px;
+        padding: 0.75rem;
+        border: 1px solid var(--secondary);
+        border-radius: 6px;
+        font-size: 1rem;
+        text-align: center;
+      }
+      .budget-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+      .skip-btn {
+        background: transparent;
+        color: var(--secondary);
+        border: 1px solid var(--secondary);
+      }
+      .skip-btn:hover {
+        background: var(--bg-color);
+      }
+      /* Calendar Styles */
+      .calendar {
+        background: #fff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: var(--card-shadow);
+        margin: 2rem auto;
+        max-width: 400px;
+      }
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      .calendar-nav {
+        background: none;
+        border: none;
+        color: var(--highlight);
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0.5rem;
+      }
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.5rem;
+      }
+      .calendar-day {
+        text-align: center;
+        padding: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--secondary);
+      }
+      .calendar-date {
+        text-align: center;
+        padding: 0.5rem;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: var(--transition);
+      }
+      .calendar-date:hover {
+        background: var(--bg-color);
+      }
+      .calendar-date.selected {
+        background: var(--highlight);
+        color: white;
+      }
+      .calendar-date.disabled {
+        color: #ccc;
+        cursor: not-allowed;
+      }
+      .calendar-date.today {
+        font-weight: bold;
+      }
+      .selected-date-display {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        color: var(--text-color);
+      }
+      .date-input-container {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--secondary);
+        opacity: 0.7;
+      }
+      .date-input-container input {
+        width: 100%;
+        max-width: 300px;
+        padding: 0.75rem;
+        border: 1px solid var(--secondary);
+        border-radius: 6px;
+        font-size: 1rem;
+        text-align: center;
+      }
+      /* Add responsive design styles */
+      @media (max-width: 768px) {
+        .container {
+          margin: 2rem auto;
+          padding: 1rem;
+        }
+        
+        .welcome-container {
+          min-height: 80vh;
+          padding: 1rem;
+        }
+        
+        h1 {
+          font-size: 2rem;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.25rem;
+        }
+        
+        .subtitle {
+          font-size: 0.7rem;
+          margin-bottom: 0;
+        }
+        
+        .card {
+          flex-direction: column;
+        }
+        
+        .image-container {
+          width: 100%;
+          padding-top: 66.67%; /* 3:2 aspect ratio for full width */
+        }
+        
+        .card img {
+          border-radius: 12px 12px 0 0;
+        }
+        
+        .card-content {
+          padding: 1rem;
+        }
+        
+        .card-content button {
+          width: 100%;
+          margin: 0.25rem 0;
+        }
+        
+        .budget-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .calendar {
+          padding: 1rem;
+        }
+        
+        .calendar-grid {
+          gap: 0.25rem;
+        }
+        
+        .calendar-date {
+          padding: 0.25rem;
+          font-size: 0.8rem;
+        }
+        
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .summary-actions {
+          flex-direction: column;
+        }
+        
+        .summary-actions button {
+          width: 100%;
+        }
+        
+        .modal-content {
+          padding: 1rem;
+          margin: 1rem;
+          max-height: 80vh;
+        }
+        
+        .modal img {
+          max-height: 200px;
+        }
+      }
+      
+      /* Add touch-friendly styles */
+      @media (hover: none) {
+        .card:hover,
+        .budget-card:hover,
+        .summary-card:hover {
+          transform: none;
+          box-shadow: var(--card-shadow);
+        }
+        
+        button:hover {
+          transform: none;
+          box-shadow: none;
+        }
+        
+        .calendar-date {
+          padding: 0.75rem 0.5rem;
+        }
+      }
+      
+      /* Add safe area insets for modern mobile devices */
+      @supports (padding: max(0px)) {
+        .container {
+          padding-left: max(1rem, env(safe-area-inset-left));
+          padding-right: max(1rem, env(safe-area-inset-right));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      To preview:
+      1. Save as index.html.
+      2. Open in a modern browser.
+    -->
+    <div id="root"></div>
+    
+    <!-- React & ReactDOM via CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script type="text/babel">
+      const { useState } = React;
+      
+      // Vendor data with one unavailable vendor per category (unavailable on "2025-05-15")
+      const vendors = {
+        florist: [
+          {
+            name: "Peony & Ivy",
+            description: "Modern garden style.",
+            tier: "$",
+            image: "https://picsum.photos/seed/peonyivy/600/400",
+            gallery: [
+              "https://picsum.photos/seed/peonyivy1/600/400",
+              "https://picsum.photos/seed/peonyivy2/600/400"
+            ],
+            contact: "info@peonyandivy.com",
+            samplePackage: "50 bouquets.",
+            unavailableDates: ["2025-05-15", "2025-05-16", "2025-05-17", "2025-05-18", "2025-05-19", "2025-05-20", "2025-05-21", "2025-05-22", "2025-05-23", "2025-05-24", "2025-05-25", "2025-05-26", "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30", "2025-05-31", "2025-06-01", "2025-06-02", "2025-06-03", "2025-06-04", "2025-06-05", "2025-06-06", "2025-06-07", "2025-06-08", "2025-06-09", "2025-06-10", "2025-06-11", "2025-06-12", "2025-06-13", "2025-06-14", "2025-06-15", "2025-06-16", "2025-06-17", "2025-06-18", "2025-06-19", "2025-06-20", "2025-06-21", "2025-06-22", "2025-06-23", "2025-06-24", "2025-06-25", "2025-06-26", "2025-06-27", "2025-06-28", "2025-06-29", "2025-06-30", "2025-07-01", "2025-07-02", "2025-07-03", "2025-07-04", "2025-07-05", "2025-07-06", "2025-07-07", "2025-07-08", "2025-07-09", "2025-07-10", "2025-07-11", "2025-07-12", "2025-07-13", "2025-07-14", "2025-07-15", "2025-07-16", "2025-07-17", "2025-07-18", "2025-07-19", "2025-07-20", "2025-07-21", "2025-07-22", "2025-07-23", "2025-07-24", "2025-07-25", "2025-07-26", "2025-07-27", "2025-07-28", "2025-07-29", "2025-07-30", "2025-07-31", "2025-08-01", "2025-08-02", "2025-08-03", "2025-08-04", "2025-08-05", "2025-08-06", "2025-08-07", "2025-08-08", "2025-08-09", "2025-08-10", "2025-08-11", "2025-08-12", "2025-08-13", "2025-08-14", "2025-08-15", "2025-08-16", "2025-08-17", "2025-08-18", "2025-08-19", "2025-08-20", "2025-08-21", "2025-08-22", "2025-08-23", "2025-08-24", "2025-08-25", "2025-08-26", "2025-08-27", "2025-08-28", "2025-08-29", "2025-08-30", "2025-08-31", "2025-09-01", "2025-09-02", "2025-09-03", "2025-09-04", "2025-09-05", "2025-09-06", "2025-09-07", "2025-09-08", "2025-09-09", "2025-09-10", "2025-09-11", "2025-09-12", "2025-09-13", "2025-09-14", "2025-09-15", "2025-09-16", "2025-09-17", "2025-09-18", "2025-09-19", "2025-09-20", "2025-09-21", "2025-09-22", "2025-09-23", "2025-09-24", "2025-09-25", "2025-09-26", "2025-09-27", "2025-09-28", "2025-09-29", "2025-09-30", "2025-10-01", "2025-10-02", "2025-10-03", "2025-10-04", "2025-10-05", "2025-10-06", "2025-10-07", "2025-10-08", "2025-10-09", "2025-10-10", "2025-10-11", "2025-10-12", "2025-10-13", "2025-10-14", "2025-10-15", "2025-10-16", "2025-10-17", "2025-10-18", "2025-10-19", "2025-10-20", "2025-10-21", "2025-10-22", "2025-10-23", "2025-10-24", "2025-10-25", "2025-10-26", "2025-10-27", "2025-10-28", "2025-10-29", "2025-10-30", "2025-10-31", "2025-11-01", "2025-11-02", "2025-11-03", "2025-11-04", "2025-11-05", "2025-11-06", "2025-11-07", "2025-11-08", "2025-11-09", "2025-11-10", "2025-11-11", "2025-11-12", "2025-11-13", "2025-11-14", "2025-11-15", "2025-11-16", "2025-11-17", "2025-11-18", "2025-11-19", "2025-11-20", "2025-11-21", "2025-11-22", "2025-11-23", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-27", "2025-11-28", "2025-11-29", "2025-11-30", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-06", "2025-12-07", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-13", "2025-12-14", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-20", "2025-12-21", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-25", "2025-12-26", "2025-12-27", "2025-12-28", "2025-12-29", "2025-12-30", "2025-12-31"]
+          },
+          {
+            name: "Willow & Vine",
+            description: "Classic Southern charm.",
+            tier: "$$",
+            image: "https://picsum.photos/seed/willowvine/600/400",
+            gallery: [
+              "https://picsum.photos/seed/willowvine1/600/400",
+              "https://picsum.photos/seed/willowvine2/600/400"
+            ],
+            contact: "contact@willowandvine.com",
+            samplePackage: "Full decor.",
+            unavailableDates: ["2025-05-15"]
+          }
+        ],
+        band: [
+          {
+            name: "The Swing Set",
+            description: "Vintage jazz vibe.",
+            tier: "$",
+            image: "https://picsum.photos/seed/swingset/600/400",
+            gallery: [
+              "https://picsum.photos/seed/swingset1/600/400",
+              "https://picsum.photos/seed/swingset2/600/400"
+            ],
+            contact: "info@swingset.com",
+            samplePackage: "3-hour set."
+          },
+          {
+            name: "Modern Groove",
+            description: "Contemporary covers.",
+            tier: "$$",
+            image: "https://picsum.photos/seed/moderngroove/600/400",
+            gallery: [
+              "https://picsum.photos/seed/moderngroove1/600/400",
+              "https://picsum.photos/seed/moderngroove2/600/400"
+            ],
+            contact: "book@moderngroove.com",
+            samplePackage: "4-hour party.",
+            unavailableDates: ["2025-05-15"]
+          }
+        ],
+        venue: [
+          {
+            name: "Southern Belle Estate",
+            description: "Elegant outdoor.",
+            tier: "$$$",
+            image: "https://picsum.photos/seed/southernbelle/600/400",
+            gallery: [
+              "https://picsum.photos/seed/southernbelle1/600/400",
+              "https://picsum.photos/seed/southernbelle2/600/400"
+            ],
+            contact: "venue@southernbelle.com",
+            samplePackage: "Full day."
+          },
+          {
+            name: "Harbor View",
+            description: "Seaside modern.",
+            tier: "$$",
+            image: "https://picsum.photos/seed/harborview/600/400",
+            gallery: [
+              "https://picsum.photos/seed/harborview1/600/400",
+              "https://picsum.photos/seed/harborview2/600/400"
+            ],
+            contact: "info@harborview.com",
+            samplePackage: "Half day.",
+            unavailableDates: ["2025-05-15"]
+          }
+        ],
+        invitations: [
+          {
+            name: "Paper & Ink",
+            description: "Modern minimalist designs.",
+            tier: "$",
+            image: "https://picsum.photos/seed/paperink/600/400",
+            gallery: [
+              "https://picsum.photos/seed/paperink1/600/400",
+              "https://picsum.photos/seed/paperink2/600/400"
+            ],
+            contact: "info@paperandink.com",
+            samplePackage: "100 invitations with RSVP cards."
+          },
+          {
+            name: "Vintage Press",
+            description: "Classic Southern elegance.",
+            tier: "$$",
+            image: "https://picsum.photos/seed/vintagepress/600/400",
+            gallery: [
+              "https://picsum.photos/seed/vintagepress1/600/400",
+              "https://picsum.photos/seed/vintagepress2/600/400"
+            ],
+            contact: "contact@vintagepress.com",
+            samplePackage: "150 invitations with matching suite."
+          }
+        ]
+      };
+      
+      // Helper: for florist only (recommended tier based on budget)
+      function getBudgetTier(budget) {
+        const b = parseFloat(budget) * 1000; // Convert thousands to actual amount
+        if (isNaN(b)) return null;
+        if (b < 20000) return "$";
+        if (b < 50000) return "$$";
+        return "$$$";
+      }
+      
+      // Budget Selection Component
+      function BudgetSelection({ budget, setBudget, onNext, onSkip }) {
+        const budgetOptions = [
+          { label: "Budget-Savvy", value: "15", description: "Under $15,000" },
+          { label: "Classic", value: "25", description: "$15,000 - $35,000" },
+          { label: "Luxury", value: "50", description: "$35,000 - $65,000" },
+          { label: "Royal", value: "100", description: "$65,000+" }
+        ];
+
+        const handleCustomBudget = (e) => {
+          const value = e.target.value;
+          if (value === '' || /^\d+$/.test(value)) {
+            setBudget(value);
+          }
+        };
+
+        return (
+          <div className="container">
+            <h1>Set Your Budget</h1>
+            <p className="small">Choose a budget range or enter a custom amount</p>
+            <div className="budget-grid">
+              {budgetOptions.map((option) => (
+                <div 
+                  key={option.value}
+                  className={`budget-card ${budget === option.value ? "highlight" : ""}`}
+                  onClick={() => setBudget(option.value)}
+                >
+                  <h3>{option.label}</h3>
+                  <p>{option.description}</p>
+                </div>
+              ))}
+            </div>
+            <div className="custom-budget">
+              <input
+                type="number"
+                value={budget}
+                onChange={handleCustomBudget}
+                placeholder="Or enter custom amount (in thousands)"
+                min="1"
+                step="1"
+                className="custom-input"
+              />
+            </div>
+            <div className="budget-actions">
+              <button onClick={onNext}>Continue</button>
+              <button className="skip-btn" onClick={onSkip}>Skip</button>
+            </div>
+          </div>
+        );
+      }
+      
+      // Calendar Helper Functions
+      function getDaysInMonth(year, month) {
+        return new Date(year, month + 1, 0).getDate();
+      }
+      
+      function getFirstDayOfMonth(year, month) {
+        return new Date(year, month, 1).getDay();
+      }
+      
+      function formatDate(date) {
+        return date.toLocaleDateString('en-US', { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+      }
+      
+      // Date Selection Component
+      function DateSelection({ weddingDay, setWeddingDay, onNext, onSkip }) {
+        const today = new Date();
+        const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+        const [currentYear, setCurrentYear] = useState(today.getFullYear());
+        
+        // Get next weekend's date
+        const nextWeekend = new Date(today);
+        nextWeekend.setDate(today.getDate() + (6 + 7 - today.getDay()) % 7);
+        const defaultDate = nextWeekend.toISOString().split('T')[0];
+        
+        // Initialize weddingDay with default date if not set
+        React.useEffect(() => {
+          if (!weddingDay) {
+            setWeddingDay(defaultDate);
+          }
+        }, []);
+
+        const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+        const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
+        const monthName = new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' });
+        
+        const handlePrevMonth = () => {
+          if (currentMonth === 0) {
+            setCurrentMonth(11);
+            setCurrentYear(currentYear - 1);
+          } else {
+            setCurrentMonth(currentMonth - 1);
+          }
+        };
+        
+        const handleNextMonth = () => {
+          if (currentMonth === 11) {
+            setCurrentMonth(0);
+            setCurrentYear(currentYear + 1);
+          } else {
+            setCurrentMonth(currentMonth + 1);
+          }
+        };
+        
+        const handleDateSelect = (day) => {
+          const selectedDate = new Date(currentYear, currentMonth, day);
+          if (selectedDate >= today) {
+            setWeddingDay(selectedDate.toISOString().split('T')[0]);
+          }
+        };
+        
+        const isDateSelected = (day) => {
+          if (!weddingDay) return false;
+          const selectedDate = new Date(currentYear, currentMonth, day);
+          return selectedDate.toISOString().split('T')[0] === weddingDay;
+        };
+        
+        const isDateDisabled = (day) => {
+          const date = new Date(currentYear, currentMonth, day);
+          return date < today;
+        };
+        
+        const isToday = (day) => {
+          const date = new Date(currentYear, currentMonth, day);
+          return date.toDateString() === today.toDateString();
+        };
+
+        return (
+          <div className="container">
+            <h1>Choose Your Date</h1>
+            <p className="small">Select your wedding date or skip to be flexible</p>
+            
+            <div className="calendar">
+              <div className="calendar-header">
+                <button className="calendar-nav" onClick={handlePrevMonth}>&lt;</button>
+                <h3>{monthName} {currentYear}</h3>
+                <button className="calendar-nav" onClick={handleNextMonth}>&gt;</button>
+              </div>
+              
+              <div className="calendar-grid">
+                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
+                  <div key={day} className="calendar-day">{day}</div>
+                ))}
+                
+                {Array.from({ length: firstDay }).map((_, index) => (
+                  <div key={`empty-${index}`} className="calendar-date"></div>
+                ))}
+                
+                {Array.from({ length: daysInMonth }).map((_, index) => {
+                  const day = index + 1;
+                  const isSelected = isDateSelected(day);
+                  const isDisabled = isDateDisabled(day);
+                  const isTodayDate = isToday(day);
+                  
+                  return (
+                    <div
+                      key={day}
+                      className={`calendar-date ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''} ${isTodayDate ? 'today' : ''}`}
+                      onClick={() => !isDisabled && handleDateSelect(day)}
+                    >
+                      {day}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            
+            <div className="date-input-container">
+              <p className="small">Or select date manually</p>
+              <input
+                type="date"
+                value={weddingDay}
+                onChange={(e) => setWeddingDay(e.target.value)}
+                min={new Date().toISOString().split('T')[0]}
+              />
+            </div>
+            
+            <div className="date-actions">
+              <button onClick={onNext}>Continue</button>
+              <button className="skip-btn" onClick={onSkip}>I'm Flexible</button>
+            </div>
+          </div>
+        );
+      }
+
+      // Update Welcome component
+      function Welcome({ onStart }) {
+        return (
+          <div className="container welcome-container">
+            <h1>
+              myDirectory
+              <span className="subtitle">by allie cooper</span>
+            </h1>
+            <h2 className="small">charleston wedding planner</h2>
+            <button onClick={onStart}>Start Planning</button>
+          </div>
+        );
+      }
+      
+      // Generic Vendor Selection Component with availability check and full calendar button
+      function VendorSelection({ title, data, budget, weddingDay, recommended, onSelect, onMoreInfo, onViewAvailability, onBack }) {
+        const recommendedTier = recommended ? getBudgetTier(budget) : null;
+        return (
+          <div className="container">
+            <h1>{title}</h1>
+            {recommended && budget && (
+              <p className="small">Budget: ${budget}K | Tier: <strong>{recommendedTier}</strong></p>
+            )}
+            {data.map((vendor, index) => {
+              const isUnavailable = weddingDay && vendor.unavailableDates && vendor.unavailableDates.includes(weddingDay);
+              return (
+                <div 
+                  key={index} 
+                  className={`card ${recommended && vendor.tier === recommendedTier ? "highlight" : ""} ${isUnavailable ? "unavailable" : ""}`}
+                >
+                  <div className="card-content">
+                    <h3>{vendor.name}</h3>
+                    <p>{vendor.description}</p>
+                    <p className="small">Tier: {vendor.tier}</p>
+                    {isUnavailable && (
+                      <p style={{ color: "red", fontWeight: "bold" }}>
+                        Not available for {new Date(weddingDay).toLocaleDateString()}
+                      </p>
+                    )}
+                    {isUnavailable ? (
+                      <button className="calendar-btn" onClick={() => onViewAvailability(vendor)} title="View Calendar">
+                        <i className="fas fa-calendar"></i>
+                      </button>
+                    ) : (
+                      <>
+                        <button onClick={() => onSelect(vendor)}>Choose</button>
+                        <button onClick={() => onMoreInfo(vendor)}>More Info</button>
+                        <button className="calendar-btn" onClick={() => onViewAvailability(vendor)} title="View Calendar">
+                          <i className="fas fa-calendar"></i>
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  <div className="image-container">
+                    <img src={vendor.image} alt={vendor.name} />
+                  </div>
+                </div>
+              );
+            })}
+            <button className="back-btn" onClick={onBack}>&larr; Back</button>
+          </div>
+        );
+      }
+      
+      // Modal for More Info about a vendor
+      function VendorModal({ vendor, show, onClose }) {
+        if (!show || !vendor) return null;
+        return (
+          <div className="modal">
+            <div className="modal-content">
+              <button className="modal-close" onClick={onClose}>&times;</button>
+              <h2>{vendor.name}</h2>
+              <p className="small">{vendor.description}</p>
+              {vendor.gallery && vendor.gallery.map((img, idx) => (
+                <img key={idx} src={img} alt={`${vendor.name} ${idx+1}`} />
+              ))}
+              <p className="small">{vendor.samplePackage}</p>
+              <p className="small">{vendor.contact}</p>
+              <button className="modal-return" onClick={onClose}>Return</button>
+            </div>
+          </div>
+        );
+      }
+      
+      // Modal for Viewing Availability (simple demo calendar view)
+      function AvailabilityModal({ vendor, weddingDay, show, onClose }) {
+        if (!show || !vendor || !weddingDay) return null;
+        const selectedDay = parseInt(weddingDay.split("-")[2]);
+        const weekDays = [13, 14, 15, 16, 17, 18, 19];
+        return (
+          <div className="modal">
+            <div className="modal-content">
+              <button className="modal-close" onClick={onClose}>&times;</button>
+              <h2>{vendor.name} - Availability</h2>
+              <p className="small">Demo Calendar View</p>
+              <table>
+                <thead>
+                  <tr>
+                    {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, idx) => (
+                      <th key={idx}>{day}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    {weekDays.map((day, idx) => (
+                      <td
+                        key={idx}
+                        style={{
+                          background: day === selectedDay ? "lightcoral" : "transparent",
+                          color: day === selectedDay ? "#fff" : "inherit"
+                        }}
+                      >
+                        {day}
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+              <button className="modal-return" onClick={onClose}>Return</button>
+            </div>
+          </div>
+        );
+      }
+      
+      // Add Wedding Size Selection Component
+      function WeddingSizeSelection({ guestCount, setGuestCount, onNext, onSkip }) {
+        const sizeOptions = [
+          { label: "Intimate", value: "50", description: "Up to 50 guests" },
+          { label: "Classic", value: "100", description: "50-150 guests" },
+          { label: "Grand", value: "200", description: "150-250 guests" },
+          { label: "Royal", value: "300", description: "250+ guests" }
+        ];
+
+        const handleCustomCount = (e) => {
+          const value = e.target.value;
+          if (value === '' || /^\d+$/.test(value)) {
+            setGuestCount(value);
+          }
+        };
+
+        return (
+          <div className="container">
+            <h1>Wedding Size</h1>
+            <p className="small">Select your expected guest count or enter a custom number</p>
+            <div className="budget-grid">
+              {sizeOptions.map((option) => (
+                <div 
+                  key={option.value}
+                  className={`budget-card ${guestCount === option.value ? "highlight" : ""}`}
+                  onClick={() => setGuestCount(option.value)}
+                >
+                  <h3>{option.label}</h3>
+                  <p>{option.description}</p>
+                </div>
+              ))}
+            </div>
+            <div className="custom-budget">
+              <input
+                type="number"
+                value={guestCount}
+                onChange={handleCustomCount}
+                placeholder="Or enter custom guest count"
+                min="1"
+                step="1"
+                className="custom-input"
+              />
+            </div>
+            <div className="budget-actions">
+              <button onClick={onNext}>Continue</button>
+              <button className="skip-btn" onClick={onSkip}>Skip</button>
+            </div>
+          </div>
+        );
+      }
+      
+      // Final Confirmation Page with wedding day summary and email request option
+      function Confirmation({ selections, budget, weddingDay, guestCount, onReset }) {
+        const handleShare = () => {
+          if (navigator.share) {
+            navigator.share({
+              title: "myDirectory Selections",
+              text: `Florist: ${selections.florist.name}, Band: ${selections.band.name}, Venue: ${selections.venue.name}, Invitations: ${selections.invitations.name}`,
+              url: window.location.href
+            });
+          } else {
+            alert("Share not supported.");
+          }
+        };
+
+        const handleSendEmail = () => {
+          const recipients = Object.values(selections)
+            .map(v => v.contact)
+            .join(",");
+          const subject = `Wedding Inquiry for ${new Date(weddingDay).toLocaleDateString()}`;
+          const body = `Budget: $${budget}K\nGuest Count: ${guestCount}\n\nSelected Vendors:\nFlorist: ${selections.florist.name}\nBand: ${selections.band.name}\nVenue: ${selections.venue.name}\nInvitations: ${selections.invitations.name}`;
+          window.location.href = `mailto:${recipients}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        };
+
+        const categoryLabels = {
+          florist: "Flowers",
+          band: "Music",
+          venue: "Venue",
+          invitations: "Invitations"
+        };
+
+        return (
+          <div className="container">
+            <h1>Your Selections</h1>
+            <p className="small">
+              Wedding Date: {new Date(weddingDay).toLocaleDateString()} | 
+              Guest Count: {guestCount || "Not specified"} | 
+              Budget: ${budget}K
+            </p>
+            <div className="summary-grid">
+              {Object.entries(selections).map(([category, vendor]) => (
+                <div 
+                  key={category} 
+                  className="summary-card"
+                  data-category={categoryLabels[category]}
+                >
+                  <img src={vendor.image} alt={vendor.name} />
+                  <div className="summary-content">
+                    <h2>{vendor.name}</h2>
+                    <p>{vendor.description}</p>
+                    <p className="small">Tier: {vendor.tier}</p>
+                    <p className="small">{vendor.contact}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="summary-actions">
+              <button onClick={handleShare}>Share</button>
+              <button onClick={handleSendEmail}>Contact Vendors</button>
+              <button onClick={onReset}>Start Over</button>
+            </div>
+          </div>
+        );
+      }
+      
+      // Main App Component
+      function App() {
+        const [step, setStep] = useState("welcome");
+        const [budget, setBudget] = useState("");
+        const [weddingDay, setWeddingDay] = useState("");
+        const [guestCount, setGuestCount] = useState("");
+        const [selections, setSelections] = useState({});
+        const [selectedVendor, setSelectedVendor] = useState(null);
+        const [showModal, setShowModal] = useState(false);
+        const [showAvailability, setShowAvailability] = useState(false);
+      
+        const handleStart = () => {
+          setStep("date");
+        };
+
+        const handleDateNext = () => {
+          setStep("budget");
+        };
+
+        const handleDateSkip = () => {
+          // Set to next weekend as default
+          const today = new Date();
+          const nextWeekend = new Date(today);
+          nextWeekend.setDate(today.getDate() + (6 + 7 - today.getDay()) % 7);
+          setWeddingDay(nextWeekend.toISOString().split('T')[0]);
+          setStep("budget");
+        };
+      
+        const handleBudgetNext = () => {
+          setStep("guests");
+        };
+
+        const handleBudgetSkip = () => {
+          setBudget("25"); // Set default budget
+          setStep("guests");
+        };
+      
+        const handleGuestsNext = () => {
+          setStep("florist");
+        };
+
+        const handleGuestsSkip = () => {
+          setGuestCount("100"); // Set default guest count
+          setStep("florist");
+        };
+      
+        const handleSelect = (vendor) => {
+          setSelections(prev => ({
+            ...prev,
+            [step]: vendor
+          }));
+          if (step === "invitations") {
+            setStep("confirmation");
+          } else {
+            setStep(step === "florist" ? "band" : 
+                   step === "band" ? "venue" : 
+                   step === "venue" ? "invitations" : "florist");
+          }
+        };
+      
+        const handleMoreInfo = (vendor) => {
+          setSelectedVendor(vendor);
+          setShowModal(true);
+        };
+      
+        const handleViewAvailability = (vendor) => {
+          setSelectedVendor(vendor);
+          setShowAvailability(true);
+        };
+      
+        const handleBack = () => {
+          if (step === "band") {
+            setStep("florist");
+          } else if (step === "venue") {
+            setStep("band");
+          } else if (step === "invitations") {
+            setStep("venue");
+          } else if (step === "florist") {
+            setStep("guests");
+          } else if (step === "guests") {
+            setStep("budget");
+          } else if (step === "budget") {
+            setStep("date");
+          }
+        };
+      
+        const handleReset = () => {
+          setStep("welcome");
+          setBudget("");
+          setWeddingDay("");
+          setGuestCount("");
+          setSelections({});
+          setSelectedVendor(null);
+          setShowModal(false);
+          setShowAvailability(false);
+        };
+      
+        return (
+          <>
+            {step === "welcome" && (
+              <Welcome onStart={handleStart} />
+            )}
+            {step === "date" && (
+              <DateSelection
+                weddingDay={weddingDay}
+                setWeddingDay={setWeddingDay}
+                onNext={handleDateNext}
+                onSkip={handleDateSkip}
+              />
+            )}
+            {step === "budget" && (
+              <BudgetSelection
+                budget={budget}
+                setBudget={setBudget}
+                onNext={handleBudgetNext}
+                onSkip={handleBudgetSkip}
+              />
+            )}
+            {step === "guests" && (
+              <WeddingSizeSelection
+                guestCount={guestCount}
+                setGuestCount={setGuestCount}
+                onNext={handleGuestsNext}
+                onSkip={handleGuestsSkip}
+              />
+            )}
+            {step === "florist" && (
+              <VendorSelection
+                title="Choose Your Florist"
+                data={vendors.florist}
+                budget={budget}
+                weddingDay={weddingDay}
+                recommended={true}
+                onSelect={handleSelect}
+                onMoreInfo={handleMoreInfo}
+                onViewAvailability={handleViewAvailability}
+                onBack={handleBack}
+              />
+            )}
+            {step === "band" && (
+              <VendorSelection
+                title="Choose Your Band"
+                data={vendors.band}
+                budget={budget}
+                weddingDay={weddingDay}
+                recommended={false}
+                onSelect={handleSelect}
+                onMoreInfo={handleMoreInfo}
+                onViewAvailability={handleViewAvailability}
+                onBack={handleBack}
+              />
+            )}
+            {step === "venue" && (
+              <VendorSelection
+                title="Choose Your Venue"
+                data={vendors.venue}
+                budget={budget}
+                weddingDay={weddingDay}
+                recommended={false}
+                onSelect={handleSelect}
+                onMoreInfo={handleMoreInfo}
+                onViewAvailability={handleViewAvailability}
+                onBack={handleBack}
+              />
+            )}
+            {step === "invitations" && (
+              <VendorSelection
+                title="Choose Your Invitation Designer"
+                data={vendors.invitations}
+                budget={budget}
+                weddingDay={weddingDay}
+                recommended={false}
+                onSelect={handleSelect}
+                onMoreInfo={handleMoreInfo}
+                onViewAvailability={handleViewAvailability}
+                onBack={handleBack}
+              />
+            )}
+            {step === "confirmation" && (
+              <Confirmation
+                selections={selections}
+                budget={budget}
+                weddingDay={weddingDay}
+                guestCount={guestCount}
+                onReset={handleReset}
+              />
+            )}
+            <VendorModal
+              vendor={selectedVendor}
+              show={showModal}
+              onClose={() => setShowModal(false)}
+            />
+            <AvailabilityModal
+              vendor={selectedVendor}
+              weddingDay={weddingDay}
+              show={showAvailability}
+              onClose={() => setShowAvailability(false)}
+            />
+          </>
+        );
+      }
+      
+      // Render the app
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
