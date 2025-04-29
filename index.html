@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chi – mind fitness</title>
-  <meta name="description" content="chi – mind fitness: train your mind, track wins, connect with peers.">
+  <meta name="description" content="chi – mind fitness: train your mind, track wins, focus on community.">
   <meta name="theme-color" content="#1a2228">
   <!-- Fonts & Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,41 +19,29 @@
       background: #1a2228;
       color: #f5f5f5;
       font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
       text-align: center;
+      overflow-x: hidden;
     }
     a { text-decoration: none; color: inherit; }
 
-    /* Fullscreen sections */
-    section { height: 100vh; display: flex; }
+    /* Fullscreen sections container */
+    section { height: 100vh; display: flex; justify-content: center; align-items: center; }
+    .container { width: 90%; max-width: 600px; margin: auto; display: flex; flex-direction: column; align-items: center; }
 
-    /* Common container */
-    .container {
-      width: 90%; max-width: 600px;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* Hero Section */
-    #hero {
-      justify-content: center;
-      align-items: center;
-    }
-    .site-title {
+    /* Hero Styles */
+    #hero .site-title {
       font-family: 'Rock Salt', cursive;
       font-size: clamp(3rem, 8vmin, 6rem);
-      margin-bottom: 1rem; /* 1rem step */
+      margin-bottom: 1rem;
     }
-    .tagline {
+    #hero .tagline {
       font-weight: 300;
       font-size: clamp(1rem, 3vmin, 2rem);
       opacity: 0.8;
-      margin-bottom: 2rem; /* 2rem step */
+      margin-bottom: 2rem;
       text-transform: lowercase;
     }
-    .cta {
+    #hero .cta {
       padding: 0.8rem 2rem;
       border: 2px solid #f5f5f5;
       border-radius: 999px;
@@ -63,50 +51,28 @@
       font-size: 1rem;
       text-transform: lowercase;
       transition: background 0.3s;
-      margin-top: auto;
-      margin-bottom: 2rem;
     }
-    .cta:hover { background: rgba(255,255,255,0.1); }
+    #hero .cta:hover { background: rgba(255,255,255,0.1); }
 
-    /* Explore Section */
-    #explore {
-      background: #11151a;
-      justify-content: flex-start;
-      align-items: center;
-      padding-top: 2rem;
-      padding-bottom: 2rem;
-    }
-    .explore-header {
-      margin-bottom: 1rem; /* heading to subhead =1rem */
+    /* Simplified Explore Styles */
+    #explore .container {
+      justify-content: center; /* center content vertically */
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
     .explore-header h2 {
       font-family: 'Rock Salt', cursive;
       font-size: clamp(2.5rem, 6vmin, 4rem);
+      margin-bottom: 2rem;
     }
-    .subhead {
+    .tagline-simple {
       font-weight: 300;
-      font-size: clamp(1rem, 2.5vmin, 1.25rem);
+      font-size: clamp(1rem, 2.5vmin, 1.5rem);
       opacity: 0.8;
-      margin-bottom: 2rem; /* subhead to pillars =2rem */
-    }
-    .pillars {
-      display: flex;
-      justify-content: space-around;
-      width: 100%; max-width: 500px;
-      flex-wrap: nowrap;
-      margin-bottom: 2rem; /* pillars to divider =2rem */
-    }
-    .pillars span {
-      font-size: clamp(1.25rem, 3vmin, 1.75rem);
-      text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: rgba(255,255,255,0.6);
-    }
-    .divider {
-      width: 30%;
-      border: none;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      margin-bottom: 3rem; /* divider to CTA =3rem */
+      margin-bottom: 3rem;
+      text-transform: uppercase;
     }
     .btn-download {
       padding: 0.8rem 2rem;
@@ -120,16 +86,13 @@
       margin-bottom: 2rem;
     }
 
-    /* Responsive */
+    /* Responsive Tweaks */
     @media (max-width: 600px) {
-      .site-title { font-size: clamp(2.5rem, 12vw, 4rem); }
-      .tagline { font-size: clamp(0.8rem, 4vw, 1.5rem); margin-bottom: 1.5rem; }
-      .cta, .btn-download { padding: 0.6rem 1.5rem; font-size: 0.95rem; }
-      .explore-header h2 { font-size: clamp(2rem, 10vw, 3rem); }
-      .subhead { font-size: clamp(0.9rem, 4vw, 1.1rem); margin-bottom: 1.5rem; }
-      .pillars span { font-size: clamp(1rem, 4vw, 1.5rem); }
-      .pillars { flex-wrap: wrap; gap: 1rem; }
-      .divider { width: 50%; margin-bottom: 2rem; }
+      #hero .site-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+      #hero .tagline { font-size: clamp(0.8rem, 4vw, 1.5rem); margin-bottom: 1.5rem; }
+      #hero .cta, .btn-download { padding: 0.6rem 1.5rem; font-size: 0.95rem; }
+      .explore-header h2 { font-size: clamp(2rem, 10vw, 3rem); margin-bottom: 1.5rem; }
+      .tagline-simple { font-size: clamp(0.9rem, 4vw, 1.2rem); margin-bottom: 2rem; }
     }
   </style>
 </head>
@@ -147,13 +110,7 @@
       <div class="explore-header">
         <h2>discover chi</h2>
       </div>
-      <p class="subhead">train your mind. track your wins. connect with peers.</p>
-      <div class="pillars">
-        <span>focus</span>
-        <span>progress</span>
-        <span>community</span>
-      </div>
-      <hr class="divider" />
+      <p class="tagline-simple">focus • progress • community</p>
       <a href="#" class="btn-download">download app</a>
     </div>
   </section>
