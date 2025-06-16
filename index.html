@@ -75,6 +75,7 @@
         <span>community</span>
       </div>
       <a href="#details" class="btn-download">learn more</a>
+      <button id="buy" class="btn-download" style="margin-left:1rem;">buy access code</button>
     </div>
   </section>
 
@@ -107,6 +108,14 @@
       <p style="text-align:center; margin-top:3rem;"><a href="#" class="btn-download">download chi now</a></p>
     </div>
   </section>
+  <script src="https://js.stripe.com/v3"></script>
+  <script>
+    document.getElementById('buy')?.addEventListener('click', async () => {
+      const res = await fetch('/.netlify/functions/create-checkout-session', { method: 'POST' });
+      const { url } = await res.json();
+      if (url) window.location.href = url;
+    });
+  </script>
 </body>
 </html>
 

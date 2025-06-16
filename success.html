@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Success</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 3rem; }
+    .token { font-size: 2rem; font-weight: 600; margin-top: 1rem; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <h1>Thank you!</h1>
+  <p>Your access code is:</p>
+  <pre class="token" id="token">loading…</pre>
+  <script>
+    (async () => {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get('session_id');
+      if (!sessionId) { document.getElementById('token').textContent = 'missing'; return; }
+      const res = await fetch('/.netlify/functions/get-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: sessionId })
+      });
+      const data = await res.json();
+      document.getElementById('token').textContent = data.token || 'error';
+    })();
+  </script>
+</body>
+</html>
