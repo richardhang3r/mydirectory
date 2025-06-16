@@ -9,7 +9,7 @@ exports.handler = async (event) => {
   const token = uuidv4().replace(/-/g, '').slice(0, 12); // 12-char unique code
 
   try {
-    const origin = event.headers.origin || 'https://mindchifitness.com';
+    const origin = event.headers.origin || 'https://chimindfitness.com';
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
