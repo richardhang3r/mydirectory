@@ -9,14 +9,15 @@ exports.handler = async (event) => {
   const token = uuidv4().replace(/-/g, '').slice(0, 12); // 12-char unique code
 
   try {
+    const origin = event.headers.origin || 'https://mindchifitness.com';
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
       line_items: [{ price: 'price_1Ram06BxfZUNbDtCbVbnzbI4', quantity: 1 }], // TODO: replace with real Price ID
       metadata: { access_token: token },
       payment_intent_data: { metadata: { access_token: token } },
-      success_url: `${event.headers.origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${event.headers.origin}/cancel.html`,
+      success_url: `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/cancel.html`,
     });
 
     return {
@@ -25,7 +26,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({ url: session.url }),
     };
   } catch (err) {
-    console.error(err);
+    console.error('Stripe create session error:', err);
     return { statusCode: 500, body: 'Stripe error' };
   }
 };
