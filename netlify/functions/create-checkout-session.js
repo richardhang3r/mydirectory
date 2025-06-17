@@ -27,11 +27,15 @@ exports.handler = async (event) => {
   try {
     const origin  = event.headers.origin || 'https://chimindfitness.com';
 
+    //price_1RapP7QxOOsucwCGq439s9AL
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
-      line_items: [{ price: 'price_1RabJOBxfZUNbDtCNDW517ic', quantity: 1 }], // TODO: replace with real Price ID
+      //line_items: [{ price: 'price_1Rap9oQxOOsucwCGTpNIsuqb', quantity: 1 }], // TODO: replace with real Price ID
+      //line_items: [{ price_data: { currency: 'usd', product_data: { name: 'Challenge Entry' }, unit_amount: 10 }, quantity: 1 }],
+      line_items: [{ price: 'price_1RapP7QxOOsucwCGq439s9AL', quantity: 1 }], // TODO: replace with real Price ID
       metadata: { access_token: token },
+      payment_intent_data: { metadata: { access_token: token } },
       success_url: `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${origin}/cancel.html`
     });
