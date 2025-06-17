@@ -30,15 +30,7 @@ exports.handler = async (event) => {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
-      // FREE line-item; replace with price: 'price_123' if needed.
-      line_items: [{
-        price_data: {
-          currency: 'usd',
-          product_data: { name: 'Challenge Entry' },
-          unit_amount: 0
-        },
-        quantity: 1
-      }],
+      line_items: [{ price: 'price_1RabJOBxfZUNbDtCNDW517ic', quantity: 1 }], // TODO: replace with real Price ID
       metadata: { access_token: token },
       success_url: `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${origin}/cancel.html`
@@ -67,6 +59,15 @@ function json(status, obj) {
 const stripe  = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { v4 }  = require('uuid');
 
+      // FREE line-item; replace with price: 'price_123' if needed.
+      line_items: [{
+        price_data: {
+          currency: 'usd',
+          product_data: { name: 'Challenge Entry' },
+          unit_amount: 10
+        },
+        quantity: 1
+      }],
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return json(405, { error: 'Method Not Allowed' });
@@ -83,6 +84,7 @@ exports.handler = async (event) => {
       payment_method_types: ['card'],
 
       line_items: [{ price: 'price_1Ram06BxfZUNbDtCbVbnzbI4', quantity: 1 }], // TODO: replace with real Price ID
+      line_items: [{ price: 'price_1RabJOBxfZUNbDtCNDW517ic', quantity: 1 }], // TODO: replace with real Price ID
 
       // Store token on the Session itself
       metadata: { access_token: token },
