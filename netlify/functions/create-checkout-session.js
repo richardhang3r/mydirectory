@@ -1,9 +1,69 @@
+
 /**
- * Netlify Function: create-checkout-session
- * Generates a 12-char access token, puts it in Checkout-Session metadata,
- * and sends the browser to Stripe Checkout.
+ * create-checkout-session.js  –  EXTREME VERBOSE MODE
+ * Logs Stripe SDK version, Node version, incoming headers, and all key steps.
  */
 
+const stripePkg = require('stripe/package.json');
+const stripe    = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { v4 }    = require('uuid');
+
+exports.handler = async (event) => {
+  // ── Global diagnostic banner ─────────────────────────
+  console.log('▶ create-checkout-session called');
+  console.log('  Stripe-SDK version :', stripePkg.version);
+  console.log('  Node version       :', process.version);
+  console.log('  Headers.origin     :', event.headers.origin);
+  console.log('  HTTP method        :', event.httpMethod);
+
+  if (event.httpMethod !== 'POST') {
+    return json(405, { error: 'Method Not Allowed' });
+  }
+
+  // ── 1. Generate the token ────────────────────────────
+  const token = v4().replace(/-/g, '').slice(0, 12);
+  console.log('  Generated access_token:', token);
+
+  try {
+    const origin  = event.headers.origin || 'https://chimindfitness.com';
+
+    const session = await stripe.checkout.sessions.create({
+      mode: 'payment',
+      payment_method_types: ['card'],
+      // FREE line-item; replace with price: 'price_123' if needed.
+      line_items: [{
+        price_data: {
+          currency: 'usd',
+          product_data: { name: 'Challenge Entry' },
+          unit_amount: 0
+        },
+        quantity: 1
+      }],
+      metadata: { access_token: token },
+      success_url: `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url:  `${origin}/cancel.html`
+    });
+
+    console.log('  Session created  →', session.id);
+
+    return json(200, { url: session.url });
+  } catch (err) {
+    console.error('✖ Stripe error creating session:', err);
+    return json(500, { error: 'Stripe error' });
+  }
+};
+
+function json(status, obj) {
+  console.log('  Returning', status, obj);
+  return {
+    statusCode: status,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(obj)
+  };
+}
+
+
+/*
 const stripe  = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { v4 }  = require('uuid');
 
@@ -22,22 +82,7 @@ exports.handler = async (event) => {
       mode: 'payment',
       payment_method_types: ['card'],
 
-      /* ---------- PRICE SECTION -------------------------------
-         OPTION A (Free entry)      – keep unit_amount: 0
-         OPTION B (Paid entry)      – set unit_amount to cents OR
-                                     swap for `price: 'price_123'`.
-      ---------------------------------------------------------- */
       line_items: [{ price: 'price_1Ram06BxfZUNbDtCbVbnzbI4', quantity: 1 }], // TODO: replace with real Price ID
-      /*
-      line_items: [{
-        price_data: {
-          currency:    'usd',
-          product_data:{ name: 'Challenge Entry' },
-          unit_amount: 0          //  <- 0 = free, 500 = $5.00, etc.
-        },
-        quantity: 1
-      }],
-      */
 
       // Store token on the Session itself
       metadata: { access_token: token },
@@ -63,7 +108,6 @@ function json(status, obj) {
 }
 
 
-/*
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { v4: uuidv4 } = require('uuid');
 
