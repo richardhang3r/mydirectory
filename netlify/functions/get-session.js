@@ -4,12 +4,11 @@
  * Retrieves Checkout Session, prints every field, flips redeemed flag.
  */
 
-const stripePkg = require('stripe/package.json');
 const stripe    = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async (event) => {
   console.log('▶ get-session called');
-  console.log('  Stripe-SDK version :', stripePkg.version);
+  console.log('  Stripe-SDK version :', STRIPE_VER);
   console.log('  Node version       :', process.version);
   console.log('  HTTP method        :', event.httpMethod);
 

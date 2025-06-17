@@ -4,14 +4,13 @@
  * Logs Stripe SDK version, Node version, incoming headers, and all key steps.
  */
 
-const stripePkg = require('stripe/package.json');
 const stripe    = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { v4 }    = require('uuid');
 
 exports.handler = async (event) => {
   // ── Global diagnostic banner ─────────────────────────
   console.log('▶ create-checkout-session called');
-  console.log('  Stripe-SDK version :', stripePkg.version);
+  console.log('  Stripe-SDK version :', STRIPE_VER);
   console.log('  Node version       :', process.version);
   console.log('  Headers.origin     :', event.headers.origin);
   console.log('  HTTP method        :', event.httpMethod);
