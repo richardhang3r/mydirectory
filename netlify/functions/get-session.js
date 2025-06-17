@@ -5,11 +5,11 @@
  */
 
 const stripe    = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const STRIPE_VER = stripe.VERSION;   // built-in string like "14.27.0"
+// const STRIPE_VER = stripe.VERSION; // We will log stripe.VERSION directly
 
 exports.handler = async (event) => {
   console.log('▶ get-session called');
-  console.log('  Stripe-SDK version :', STRIPE_VER);
+  console.log('  Stripe-SDK version (from instance):', stripe.VERSION);
   console.log('  Node version       :', process.version);
   console.log('  HTTP method        :', event.httpMethod);
 
