@@ -14,7 +14,7 @@ exports.handler = async (event) => {
     // Log which Stripe account & mode this key is hitting
     const acct = await stripe.accounts.retrieve();
     console.log('Stripe account id:', acct.id);
-    const query = `metadata['access_token']:'${token}' AND status:'succeeded'`;
+    const query = `metadata['access_token']:'${token}'`;
     console.log('Search query:', query);
     console.log('Verifying token:', token);
     const search = await stripe.paymentIntents.search({
