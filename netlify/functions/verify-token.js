@@ -17,8 +17,8 @@ exports.handler = async (event) => {
     const query = `metadata['access_token']:'${token}'`;
     console.log('Search query:', query);
     console.log('Verifying token:', token);
-    const search = await stripe.paymentIntents.search({
-      query: `metadata['access_token']:'${token}' AND status:'succeeded'`,
+    const search = await stripe.checkout.sessions.search({
+      query: `metadata['access_token']:'${token}' AND payment_status:'paid' AND status:'complete'`,
     });
 
     console.log('Search returned', search.data.length, 'items');
@@ -26,13 +26,13 @@ exports.handler = async (event) => {
       return { statusCode: 404, body: 'invalid' };
     }
 
-    const pi = search.data[0];
-    console.log('Matching PaymentIntent:', {id: pi.id, status: pi.status, redeemed: pi.metadata.redeemed});
-    if (pi.metadata.redeemed === 'true') {
+    const session = search.data[0];
+    console.log('Matching Session:', {id: session.id, payment_status: session.payment_status, redeemed: session.metadata.redeemed});
+    if (session.metadata.redeemed === 'true') {
       return { statusCode: 409, body: 'already-used' };
     }
 
-    await stripe.paymentIntents.update(pi.id, {
+    await stripe.checkout.sessions.update(session.id, {
       metadata: { redeemed: 'true' },
     });
 
