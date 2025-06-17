@@ -5,6 +5,7 @@
  */
 
 const stripe    = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const STRIPE_VER = stripe.VERSION;   // built-in string like "14.27.0"
 
 exports.handler = async (event) => {
   console.log('▶ get-session called');

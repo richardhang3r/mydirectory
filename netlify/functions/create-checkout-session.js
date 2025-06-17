@@ -6,6 +6,7 @@
 
 const stripe    = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { v4 }    = require('uuid');
+const STRIPE_VER = stripe.VERSION;   // built-in string like "14.27.0"
 
 exports.handler = async (event) => {
   // ── Global diagnostic banner ─────────────────────────
