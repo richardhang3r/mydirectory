@@ -46,6 +46,7 @@ exports.handler = async (event) => {
 
     // Mark redeemed (requires Stripe-node ≥ 14.6.0)
     console.log('  Marking session as redeemed…');
+    console.log('  DEBUG: typeof stripe.checkout.sessions.update is:', typeof stripe.checkout.sessions.update);
     await stripe.checkout.sessions.update(session.id, {
       metadata: { ...session.metadata, redeemed: 'true' }
     });
