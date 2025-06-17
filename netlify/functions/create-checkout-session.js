@@ -1,3 +1,69 @@
+/**
+ * Netlify Function: create-checkout-session
+ * Generates a 12-char access token, puts it in Checkout-Session metadata,
+ * and sends the browser to Stripe Checkout.
+ */
+
+const stripe  = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { v4 }  = require('uuid');
+
+exports.handler = async (event) => {
+  if (event.httpMethod !== 'POST') {
+    return json(405, { error: 'Method Not Allowed' });
+  }
+
+  // 1 Generate 12-character token
+  const token = v4().replace(/-/g, '').slice(0, 12);
+
+  try {
+    const origin = event.headers.origin || 'https://chimindfitness.com';
+
+    const session = await stripe.checkout.sessions.create({
+      mode: 'payment',
+      payment_method_types: ['card'],
+
+      /* ---------- PRICE SECTION -------------------------------
+         OPTION A (Free entry)      – keep unit_amount: 0
+         OPTION B (Paid entry)      – set unit_amount to cents OR
+                                     swap for `price: 'price_123'`.
+      ---------------------------------------------------------- */
+      line_items: [{ price: 'price_1Ram06BxfZUNbDtCbVbnzbI4', quantity: 1 }], // TODO: replace with real Price ID
+      /*
+      line_items: [{
+        price_data: {
+          currency:    'usd',
+          product_data:{ name: 'Challenge Entry' },
+          unit_amount: 0          //  <- 0 = free, 500 = $5.00, etc.
+        },
+        quantity: 1
+      }],
+      */
+
+      // Store token on the Session itself
+      metadata: { access_token: token },
+
+      success_url: `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url:  `${origin}/cancel.html`
+    });
+
+    return json(200, { url: session.url });
+  } catch (err) {
+    console.error('Stripe create-session error ➜', err);
+    return json(500, { error: 'Stripe error' });
+  }
+};
+
+// ───────────────────────────────────────────────────────────────
+function json(status, obj) {
+  return {
+    statusCode: status,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(obj)
+  };
+}
+
+
+/*
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { v4: uuidv4 } = require('uuid');
 
@@ -30,3 +96,5 @@ exports.handler = async (event) => {
     return { statusCode: 500, body: 'Stripe error' };
   }
 };
+
+*/

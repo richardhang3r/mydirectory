@@ -13,19 +13,42 @@
   <h1>Thank you!</h1>
   <p>Your access code is:</p>
   <pre class="token" id="token">loading…</pre>
-  <script>
-    (async () => {
-      const params = new URLSearchParams(window.location.search);
-      const sessionId = params.get('session_id');
-      if (!sessionId) { document.getElementById('token').textContent = 'missing'; return; }
-      const res = await fetch('/.netlify/functions/get-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: sessionId })
-      });
-      const data = await res.json();
-      document.getElementById('token').textContent = data.token || 'error';
-    })();
-  </script>
+    <script>
+(async () => {
+  const $token = document.getElementById('token');
+
+  // 1. Get ?session_id=… from the URL
+  const params     = new URLSearchParams(window.location.search);
+  const sessionId  = params.get('session_id');
+
+  // Detect if Stripe failed to substitute the placeholder
+  if (!sessionId || sessionId.startsWith('{')) {
+    $token.textContent = 'missing session id';
+    return;
+  }
+
+  // 2. Ask Netlify function for the access-token
+  try {
+    const res = await fetch('/.netlify/functions/get-session', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ id: sessionId })
+    });
+
+    // read plain-text error if not ok
+    if (!res.ok) {
+      const { error } = await res.json();
+      $token.textContent = `error: ${error}`;
+      return;
+    }
+
+    const { token } = await res.json();
+    $token.textContent = token || 'no token';
+  } catch (err) {
+    console.error(err);
+    $token.textContent = 'network / json error';
+  }
+})();
+</script>
 </body>
 </html>
