@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "stripe": "^15",
+    "stripe": "^16",
     "uuid": "^9.0.0"
   }
 }
