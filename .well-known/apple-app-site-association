@@ -4,7 +4,7 @@
     "details": [
       {
         "appID": "U9A674PK7L.hang3r.chi",
-        "paths": [ "/*" ]
+        "paths": [ "/goal/*" ]
       }
     ]
   }
