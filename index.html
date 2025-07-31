@@ -96,25 +96,39 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Chi</h1>
-        <p class="subtitle">mind fitness</p>
-        <p class="description">chi is an invite-only app for those turning consistency into a lifestyle.</p>
-        <form id="invite-form">
-            <input type="email" id="email" placeholder="Enter your email" required>
-            <button type="submit">Request Invite</button>
-        </form>
-        <p class="footer">&copy; 2025 Chi. All rights reserved.</p>
-    </div>
-    <script>
-        document.getElementById('invite-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            if (email) {
-                alert(`Thank you! An invite request for ${email} has been submitted. We'll be in touch soon.`);
-                this.reset();
-            }
-        });
-    </script>
+<div class="container">
+    <h1>Chi</h1>
+    <p class="subtitle">mind fitness</p>
+    <p class="description">chi is an invite-only app for those turning consistency into a lifestyle.</p>
+    <form id="invite-form" name="invite-request" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="invite-request" /> <!-- Required for Netlify -->
+        <input type="hidden" name="bot-field" /> <!-- Honeypot for spam -->
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <button type="submit">Request Invite</button>
+    </form>
+    <p class="footer">&copy; 2025 Chi. All rights reserved.</p>
+</div>
+	<script>
+	    const form = document.getElementById('invite-form');
+	    form.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		const formData = new FormData(form);
+		try {
+		    const response = await fetch('/', {
+			method: 'POST',
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			body: new URLSearchParams(formData).toString()
+		    });
+		    if (response.ok) {
+			alert('Invite request submitted successfully! Check your inbox soon.');
+			form.reset();
+		    } else {
+			alert('Submission failed. Please try again.');
+		    }
+		} catch (error) {
+		    alert('An error occurred. Please try again.');
+		}
+	    });
+	</script>
 </body>
 </html>
