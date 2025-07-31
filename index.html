@@ -85,6 +85,11 @@
             font-size: 0.8rem;
             color: #999;
         }
+        #message {
+            margin-top: 10px;
+            font-size: 1rem;
+            font-weight: 300;
+        }
         @media (max-width: 768px) {
             h1 {
                 font-size: 3rem;
@@ -100,35 +105,44 @@
     <h1>Chi</h1>
     <p class="subtitle">mind fitness</p>
     <p class="description">chi is an invite-only app for those turning consistency into a lifestyle.</p>
-    <form id="invite-form" name="invite-request" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="invite-request" /> <!-- Required for Netlify -->
-        <input type="hidden" name="bot-field" /> <!-- Honeypot for spam -->
+    <form id="invite-form" action="/thankyou" name="invite-request" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="invite-request" />
+        <input type="hidden" name="bot-field" />
         <input type="email" id="email" name="email" placeholder="Enter your email" required>
         <button type="submit">Request Invite</button>
+        <p id="message"></p> <!-- Added message element -->
     </form>
     <p class="footer">&copy; 2025 Chi. All rights reserved.</p>
 </div>
-	<script>
-	    const form = document.getElementById('invite-form');
-	    form.addEventListener('submit', async (e) => {
-		e.preventDefault();
-		const formData = new FormData(form);
-		try {
-		    const response = await fetch('/', {
-			method: 'POST',
-			headers: { "Content-Type": "application/x-www-form-urlencoded" },
-			body: new URLSearchParams(formData).toString()
-		    });
-		    if (response.ok) {
-			alert('Invite request submitted successfully! Check your inbox soon.');
-			form.reset();
-		    } else {
-			alert('Submission failed. Please try again.');
-		    }
-		} catch (error) {
-		    alert('An error occurred. Please try again.');
-		}
-	    });
-	</script>
+<script>
+    const form = document.getElementById('invite-form');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
+        const formData = new FormData(form);
+        message.textContent = ''; // Clear previous messages
+
+        try {
+            const response = await fetch('/', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                message.textContent = 'Invite request submitted successfully!';
+                message.style.color = '#2ecc71'; // Green for success
+                // Redirect handled by Netlify's action="/thankyou"
+            } else {
+                throw new Error('Form submission failed. Please try again.');
+            }
+        } catch (error) {
+            message.textContent = error.message || 'An error occurred. Please try again later.';
+            message.style.color = '#e74c3c'; // Red for error
+            console.error('Error:', error);
+        }
+    });
+</script>
 </body>
 </html>

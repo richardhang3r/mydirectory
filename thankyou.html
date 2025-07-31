@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi - Thank You</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        .container {
+            max-width: 600px;
+            padding: 60px 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            object-fit: contain;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        .icon:hover {
+            opacity: 1;
+        }
+        h1 {
+            font-size: 3rem;
+            font-weight: 400;
+            margin: 0 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin: 0 0 15px;
+            color: #666;
+        }
+        .message {
+            font-size: 1rem;
+            font-weight: 300;
+            margin: 0 0 40px;
+            color: #555;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .footer {
+            margin-top: 60px;
+            font-size: 0.85rem;
+            color: #999;
+            position: absolute;
+            bottom: 20px;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .container {
+                padding: 40px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="your-icon.png" alt="Chi Icon" class="icon"> <!-- Place your icon here -->
+        <p class="message">Thank you. Expect to hear from us soon.</p>
+    </div>
+    <p class="footer">&copy; 2025 Chi. All rights reserved.</p>
+</body>
+</html>
