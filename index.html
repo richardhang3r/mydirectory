@@ -114,35 +114,5 @@
     </form>
     <p class="footer">&copy; 2025 Chi. All rights reserved.</p>
 </div>
-<script>
-    const form = document.getElementById('invite-form');
-    const message = document.getElementById('message');
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Prevent default form submission
-
-        const formData = new FormData(form);
-        message.textContent = ''; // Clear previous messages
-
-        try {
-            const response = await fetch('/', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                message.textContent = 'Invite request submitted successfully!';
-                message.style.color = '#2ecc71'; // Green for success
-                // Redirect handled by Netlify's action="/thankyou"
-            } else {
-                throw new Error('Form submission failed. Please try again.');
-            }
-        } catch (error) {
-            message.textContent = error.message || 'An error occurred. Please try again later.';
-            message.style.color = '#e74c3c'; // Red for error
-            console.error('Error:', error);
-        }
-    });
-</script>
 </body>
 </html>
