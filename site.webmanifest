@@ -1,0 +1,10 @@
+{
+  "name": "chi early access",
+  "short_name": "chi",
+  "icons": [
+    { "src": "/chi-logo.png", "sizes": "1024x1024", "type": "image/png" }
+  ],
+  "theme_color": "#111111",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
