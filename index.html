@@ -7,32 +7,16 @@
     <meta name="description" content="chi - mind fitness: Turn consistency into a lifestyle. Request early access now.">
     <link rel="icon" href="/favicon.ico">
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="chi - mind fitness">
+    <meta property="og:title" content="chi - mind fitness (Early Access)">
     <meta property="og:description" content="Turn consistency into a lifestyle. Request early access now.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://yourdomain.com">
     <meta property="og:image" content="https://yourdomain.com/chi-logo-noback.png">
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="chi - mind fitness">
+    <meta name="twitter:title" content="chi - mind fitness (Early Access)">
     <meta name="twitter:description" content="Turn consistency into a lifestyle. Request early access now.">
     <meta name="twitter:image" content="https://yourdomain.com/chi-logo-noback.png">
-
-  <!-- PWA / theming -->
-  <meta name="theme-color" content="#111" />
-  <meta name="apple-mobile-web-app-title" content="chi early access" />
-  <link rel="manifest" href="/site.webmanifest" />
-  <!-- PERF: warm up font domains early -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-
-  <!-- Favicons -->
-  <link rel="icon" href="/favicon.ico" sizes="any" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="apple-touch-icon" href="/chi-logo.png" />
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
@@ -40,8 +24,8 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #263743;
-            color: #FFFFFF;
+            background-color: #FFFFFF;
+            color: #000000;
             font-family: 'Inter', sans-serif;
             display: flex;
             justify-content: center;
@@ -68,21 +52,22 @@
             font-size: 2.5rem;
             font-weight: 700;
             margin: 1rem 0 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
         }
 
-        .subtle {
-            font-size: 1.1rem;
-            opacity: 0.6;
+        .inline-subtle {
+            font-size: 1.2rem;
             font-weight: 300;
+            opacity: 0.7;
+            margin-left: 0.5rem;
             font-style: italic;
-            margin-bottom: 0.5rem;
-            display: block;
         }
 
         .tagline {
             font-size: 1rem;
-            opacity: 0.8;
-            font-style: normal;
+            opacity: 0.7;
             margin-bottom: 1.5rem;
         }
 
@@ -103,8 +88,8 @@
 
         .input-row input[type="email"] {
             background-color: transparent;
-            border: 1px solid #FFFFFF;
-            color: #FFFFFF;
+            border: 1px solid #000000;
+            color: #000000;
             padding: 1rem;
             flex: 1;
             max-width: 400px;
@@ -120,8 +105,8 @@
         }
 
         .input-row button {
-            background-color: #FFFFFF;
-            color: #0A192F;
+            background-color: #000000;
+            color: #FFFFFF;
             border: none;
             padding: 1rem 2rem;
             font-size: 1rem;
@@ -148,6 +133,14 @@
         }
 
         @media (max-width: 480px) {
+            h1 {
+                flex-direction: column;
+                align-items: center;
+            }
+            .inline-subtle {
+                margin-left: 0;
+                margin-top: 0.3rem;
+            }
             .input-row {
                 flex-direction: column;
             }
@@ -181,9 +174,8 @@
 </head>
 <body>
     <main class="container">
-        <img src="chi-fighter-title.png" alt="chi Logo" class="logo">
-        <h1>chi</h1>
-        <span class="subtle">mind fitness</span>
+        <img src="your-icon.png" alt="chi Logo" class="logo">
+        <h1>chi<span class="inline-subtle">mind fitness</span></h1>
         <p class="tagline">transform screentime into willpower</p>
         <form id="invite-form" action="/thankyou" name="invite-request" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="invite-request" />
